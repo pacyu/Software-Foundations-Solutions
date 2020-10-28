@@ -1,0 +1,37 @@
+Axiom plus_ring0 : forall a x : nat,
+  a + x = a -> x = O.
+Axiom plus_ring1 : forall a b : nat,
+  a + b = b + a.
+Axiom plus_ring2 : forall a b c : nat,
+  (a + b) + c = a + (b + c).
+Axiom plus_ring3 : forall a x : nat,
+  x = a -> a - x = a + (-x) -> a - x = O.
+Axiom g_ring : forall a b c : nat,
+  a * (b + c) = a * b + a * c.
+Axiom mult_ring0 : forall a e : nat,
+  a * 0 = 0.
+Axiom mult_ring1 : forall a b : nat,
+  a * b = b * a.
+Axiom mult_ring2 : forall a b c : nat,
+  (a * b) * c = a * (b * c).
+Axiom mult_ring3 : forall a e : nat,
+  e * a = a.
+
+Lemma unique : forall a b c, a + b = a + c -> b = c.
+Proof.
+  intros a b c.
+  rewrite -> plus_ring0.
+  rewrite -> mult_ring3.
+  reflexivity.
+Qed.
+Print unit_commutative_law.
+
+(* Inductive pa : Set :=
+  | O : pa
+  | A : pa -> pa.
+Check pa_ind.
+Check A.
+Check S.
+Check S 1.
+Check A (A O). *)
+
