@@ -3,12 +3,16 @@ Inductive bin : Type :=
   | B0 (n : bin)
   | B1 (n : bin).
 
-Fixpoint incr (m:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint incr (m:bin) : bin :=
+  match m with
+  | Z => Z
+  | B0 n => B1 (incr n)
+  | B1 n => B0 (incr n)
+  end.
 Fixpoint bin_to_nat (m:bin) : nat
   (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
 Example test_bin_incr1 : (incr (B1 Z)) = B0 (B1 Z).
-(* FILL IN HERE *) Admitted.
+Proof. simpl.
 Example test_bin_incr2 : (incr (B0 (B1 Z))) = B1 (B1 Z).
 (* FILL IN HERE *) Admitted.
 Example test_bin_incr3 : (incr (B1 (B1 Z))) = B0 (B0 (B1 Z)).
