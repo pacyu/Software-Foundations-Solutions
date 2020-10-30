@@ -33,19 +33,17 @@ Theorem plus_assoc : forall n m p : nat,
 Proof.
   induction n.
   - simpl. reflexivity.
-  - simpl.
-    { induction m.
-      + simpl. rewrite <- plus_n_O. reflexivity.
+  - { induction m.
       + simpl.
-        induction p.
-        - rewrite <- plus_n_O. rewrite <- plus_n_O. reflexivity.
-        - rewrite <- plus_n_Sm.
-          rewrite <- plus_n_Sm.
-          rewrite <- plus_n_Sm.
-          rewrite IHm.
-          rewrite <- plus_n_Sm.
-          rewrite <- plus_n_Sm.
-          simpl.
-          reflexivity.
-    }
+        rewrite <- plus_n_O.
+        reflexivity.
+      + { induction p.
+          - rewrite <- plus_n_O.
+            rewrite <- plus_n_O.
+            reflexivity.
+          - rewrite <- plus_n_Sm.
+            rewrite <- plus_n_Sm.
+            rewrite <- plus_n_Sm.
+            rewrite IHp.
+            reflexivity. } }
 Qed. 
