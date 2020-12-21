@@ -92,7 +92,7 @@ Proof.
   - rewrite En'. simpl. rewrite negb_involutive. reflexivity.
 Qed.
 
-Definition manual_grade_for_destruct_induction : option (nat×string) := None.
+Definition manual_grade_for_destruct_induction : option (nat*string) := None.
 
 Theorem plus_rearrange : forall n m p q : nat,
   (n + m) + (p + q) = (m + n) + (p + q).
@@ -103,9 +103,9 @@ Proof.
   rewrite -> H. reflexivity.
 Qed.
 
-Theorem: Addition is commutative.
+(* Theorem: Addition is commutative.
 Proof:
-  Definition manual_grade_for_plus_comm_informal : option (nat×string) := None.
+  Definition manual_grade_for_plus_comm_informal : option (nat*string) := None.
 Qed.
 
 Theorem: true = n =? n for any n.
@@ -115,7 +115,7 @@ Proof: By induction on n.
       This follows directly from the reflexivity.
     + Next, suppose n = S n'. We must show that
         S n' = S n'.
-Qed.
+Qed. *)
 
 Theorem plus_swap : forall n m p : nat,
   n + (m + p) = m + (n + p).
@@ -143,28 +143,53 @@ Theorem leb_refl : forall n:nat,
   true = (n <=? n).
 Proof.
   intro n.
-  assert (H: n <= n).
-  { reflexivity. }
-  
+  induction n as [| n'].
+  - reflexivity.
+  - rewrite IHn'. reflexivity.
+Qed.
+
 Theorem zero_nbeq_S : forall n:nat,
   0 =? (S n) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n.
+  simpl.
+  reflexivity.
+Qed.
+
 Theorem andb_false_r : forall b : bool,
   andb b false = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro b.
+  induction b.
+  - reflexivity.
+  - reflexivity.
+Qed.
+
 Theorem plus_ble_compat_l : forall n m p : nat,
   n <=? m = true -> (p + n) <=? (p + m) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  intros H.
+  induction p as [| p'].
+  - simpl. rewrite H. reflexivity.
+  - simpl. rewrite IHp'. reflexivity.
+Qed.
+
 Theorem S_nbeq_0 : forall n:nat,
   (S n) =? 0 = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
-Theorem mult_1_l : forall n:nat, 1 × n = n.
+  intro n.
+  - simpl. reflexivity.
+Qed.
+
+Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n.
+  induction n as [| n'].
+  - reflexivity.
+  - simpl. rewrite <- plus_n_O. reflexivity.
+Qed.
+
 Theorem all3_spec : forall b c : bool,
     orb
       (andb b c)
@@ -172,22 +197,60 @@ Theorem all3_spec : forall b c : bool,
                (negb c))
   = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c.
+  destruct b.
+  - destruct c.
+    + reflexivity.
+    + reflexivity.
+  - destruct c.
+    + reflexivity.
+    + reflexivity.
+Qed.
+
 Theorem mult_plus_distr_r : forall n m p : nat,
-  (n + m) × p = (n × p) + (m × p).
+  (n + m) * p = (n * p) + (m * p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  induction n as [| n'].
+  - induction m as [| m'].
+    + simpl. reflexivity.
+    + simpl. reflexivity.
+  - induction m as [| m'].
+    + induction p as [| p'].
+      * simpl. rewrite IHn'. simpl. reflexivity.
+      * simpl. rewrite IHn'. simpl. rewrite plus_assoc. reflexivity.
+    + induction p as [| p'].
+      * simpl. rewrite IHn'. simpl. reflexivity.
+      * simpl. rewrite IHn'. simpl. rewrite plus_assoc. reflexivity.
+Qed.
+
 Theorem mult_assoc : forall n m p : nat,
-  n × (m × p) = (n × m) × p.
+  n * (m * p) = (n * m) * p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  induction n as [| n'].
+  - reflexivity.
+  - simpl. rewrite mult_plus_distr_r. rewrite IHn'. reflexivity.
+Qed.
 
 Theorem eqb_refl : forall n : nat,
   true = (n =? n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n.
+  induction n as [| n'].
+  - reflexivity.
+  - simpl. rewrite IHn'. reflexivity.
+Qed.
 
+(* The replace tactic allows you to specify a particular subterm to rewrite and what you want it rewritten to: replace (t) with (u) replaces (all copies of) expression t in the goal by expression u, and generates t = u as an additional subgoal. This is often useful when a plain rewrite acts on the wrong part of the goal.
+Use the replace tactic to do a proof of plus_swap', just like plus_swap but without needing assert. *)
 Theorem plus_swap' : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  rewrite plus_assoc.
+  rewrite plus_assoc.
+  replace (n + m) with (m + n).
+  - reflexivity.
+  - rewrite plus_comm. reflexivity.
+Qed.
