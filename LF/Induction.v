@@ -236,7 +236,6 @@ Qed.
 Theorem eqb_refl : forall n : nat,
   true = (n =? n).
 Proof.
-  intro n.
   induction n as [| n'].
   - reflexivity.
   - simpl. rewrite IHn'. reflexivity.
@@ -254,3 +253,139 @@ Proof.
   - reflexivity.
   - rewrite plus_comm. reflexivity.
 Qed.
+
+Fixpoint nat_to_bin (n:nat) : bin :=
+  match n with
+  | O => Z
+  | S n' => incr (nat_to_bin n')
+  end.
+
+Theorem incr_bin_to_nat_comm : forall n,
+  bin_to_nat (incr n) = S (bin_to_nat n).
+Proof.
+  induction n as [| n' | n'].
+  - reflexivity.
+  - reflexivity.
+  - simpl. rewrite IHn'. rewrite plus_n_Sm. reflexivity.
+Qed.
+
+Theorem nat_bin_nat : forall n, bin_to_nat (nat_to_bin n) = n.
+Proof.
+  induction n as [| n'].
+  - reflexivity.
+  - simpl. rewrite incr_bin_to_nat_comm. rewrite IHn'. reflexivity.
+Qed.
+(* Do not modify the following line: *)
+Definition manual_grade_for_binary_inverse_a : option (nat*string) := None.
+
+(* FILL IN HERE *)
+(* Do not modify the following line: *)
+Definition manual_grade_for_binary_inverse_b : option (nat*string) := None.
+
+Definition twice (b : bin) : bin :=
+  match b with
+  | Z => Z
+  | c => B0 c
+  end.
+
+Fixpoint normalize (b : bin) : bin :=
+  match b with
+  | Z => Z
+  | B0 b' => twice (normalize b')
+  | B1 b' => incr (twice (normalize b'))
+  end.
+
+Theorem incr_twice : forall n,
+  incr (incr (twice n)) = twice (incr n).
+Proof.
+  induction n as [|n' | n'].
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+Qed.
+
+Theorem double_nat_to_bin_comm : forall n,
+  nat_to_bin (n * 2) = twice (nat_to_bin n).
+Proof.
+  induction n as [|n'].
+  - reflexivity.
+  - simpl. rewrite IHn'. rewrite incr_twice. reflexivity.
+Qed.
+
+Theorem plus_nn_to_mult_two : forall n,
+  n + n = n * 2.
+Proof.
+  induction n as [|n'].
+  - reflexivity.
+  - simpl. rewrite <- plus_n_Sm. rewrite IHn'. reflexivity.
+Qed.
+
+Theorem double_plus_double_to_double_double : forall n,
+  double n + double n = double (double n).
+Proof.
+  induction n as [|n'].
+  - reflexivity.
+  - simpl.
+    rewrite <- plus_n_Sm.
+    rewrite <- plus_n_Sm.
+    rewrite IHn'.
+    reflexivity.
+Qed.
+
+Theorem plus_nn_to_double_nat : forall n : bin,
+  bin_to_nat n + bin_to_nat n = double (bin_to_nat n).
+Proof.
+  induction n as [|n' |n'].
+  - reflexivity.
+  - simpl.
+    rewrite <- plus_n_O.
+    rewrite IHn'.
+    rewrite double_plus_double_to_double_double.
+    reflexivity.
+  - simpl.
+    rewrite <- plus_n_O.
+    rewrite IHn'.
+    rewrite <- plus_n_Sm.
+    rewrite double_plus_double_to_double_double.
+    reflexivity.
+Qed.
+
+Theorem double_nat_to_mult_two : forall n : bin,
+  double (bin_to_nat n) = (bin_to_nat n) * 2.
+Proof.
+  induction n as [|n' |n'].
+  - reflexivity.
+  - simpl.
+    rewrite <- plus_n_O.
+    rewrite plus_nn_to_double_nat.
+    rewrite <- double_plus_double_to_double_double.
+    rewrite IHn'.
+    rewrite plus_nn_to_mult_two.
+    reflexivity.
+  - simpl.
+    rewrite <- plus_n_O.
+    rewrite <- plus_nn_to_mult_two.
+    rewrite plus_nn_to_double_nat.
+    rewrite double_plus_double_to_double_double.
+    reflexivity.
+Qed.
+
+Theorem bin_nat_bin : forall n, nat_to_bin (bin_to_nat n) = normalize n.
+Proof.
+  induction n as [| n' | n'].
+  - reflexivity.
+  - simpl.
+    rewrite <- plus_n_O.
+    rewrite plus_nn_to_mult_two.
+    rewrite double_nat_to_bin_comm.
+    rewrite IHn'.
+    reflexivity.
+  - simpl.
+    rewrite <- plus_n_O.
+    rewrite plus_nn_to_mult_two.
+    rewrite double_nat_to_bin_comm.
+    rewrite IHn'.
+    reflexivity.
+Qed.
+(* Do not modify the following line: *)
+Definition manual_grade_for_binary_inverse_c : option (nat*string) := None.

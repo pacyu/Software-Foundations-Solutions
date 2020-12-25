@@ -39,9 +39,9 @@ Coq solutions for [Software Foundations](https://softwarefoundations.cis.upenn.e
   - [x] [Exercise_2_evenb_S](/LF/Induction.v)
   - [ ] [Exercise_2_plus_comm_informal](/LF/Induction.v)(Unsolved.)
   - [ ] [Exercise_2_eqb_refl_informal](/LF/Induction.v)(Unsolved.)
-  - [ ] [More_Exercises](/LF/Induction.v)
+  - [x] [More_Exercises](/LF/Induction.v)
     + [x] [Exercise_3_mult_comm](/LF/Induction.v)
-    + [ ] [Exercise_3_more_exercises](/LF/Induction.v)(Unsolved.)
+    + [x] [Exercise_3_more_exercises](/LF/Induction.v)(Unsolved.)
 
 # PROGRAMMING LANGUAGE FOUNDATIONS
 [VOLUME 2: PROGRAMMING LANGUAGE FOUNDATIONS](https://softwarefoundations.cis.upenn.edu/plf-current/toc.html).
@@ -73,9 +73,3 @@ Coq solutions for [Software Foundations](https://softwarefoundations.cis.upenn.e
 [VERIFIABLE C](/VC/)
 
 ## TABLE OF CONTENTS
-
-# OTHERS
-## TABLE OF CONTENTS
-* [Other](/Other)
-  - [Proof0x1](/Other/proof0x1.v)
-  - [Proof0x2](/Other/proof0x2.v)
